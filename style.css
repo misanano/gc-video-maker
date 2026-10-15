@@ -19,6 +19,7 @@
   --off: #2A2E4E; --off-fg: #6E7398; --stage: #070818; --link: #9AA3FF; --focus: rgba(154,163,255,.25); color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; } /* GitHub版でも、書き出す前の「保存する」や動画の枠を隠す */
 body { margin: 0; background: var(--bg); color: var(--navy); font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif; font-size: 15px; }
 button, input { font: inherit; }
 .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 24px; background: var(--card); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
