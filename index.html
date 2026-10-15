@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GC応援動画メーカー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="assets/gc_logo.png" alt=""><div><h1>GC応援動画メーカー</h1><p>撮った動画をはめて、文字を打つだけ。Giving Campaign 2026 の応援動画（縦 9:16）を無料で作れます。おすすめは15秒（20秒まで）・30秒（35秒まで）。</p></div></div>
+  <div class="ver" role="group" aria-label="動画の長さ">
+    <button data-ver="15" class="on">15秒版</button><button data-ver="30">30秒版</button>
+  </div>
+</header>
+
+<div id="pcOnly" class="notice" hidden>このツールは<b>パソコンの Google Chrome</b> で使ってください（スマホでは書き出せません）。</div>
+
+<main>
+  <section class="left">
+    <div class="card globals">
+      <h2>団体の情報</h2>
+      <p class="lead">ここに入れた名前は、動画の3か所と保存するファイル名に自動で入ります。</p>
+      <label for="univ">大学名<input id="univ" placeholder="例：大阪大学"><small>画面下の青い帯・最後のエンドカード（「〇〇大学 〇〇部を応援しよう」）・ファイル名に入ります</small></label>
+      <label for="team">団体名<input id="team" placeholder="例：体育会アイスホッケー部"><small>大学名と同じく、青い帯・エンドカード・ファイル名に入ります。正式な名前で入れてください</small></label>
+      <label for="nick">図で使う呼び名<input id="nick" placeholder="例：アイスホッケー部"><small>「GC・無料投票」の場面の仕組み図に「〇〇の活動資金に」と入ります。短いほうが読みやすいです（空欄なら団体名）</small></label>
+    </div>
+    <ol id="scenes"></ol>
+    <div class="card" id="bgm"></div>
+  </section>
+
+  <aside class="right">
+    <div class="stage"><canvas id="preview" width="1080" height="1920"></canvas></div>
+    <div class="bar" id="bar"></div>
+    <div class="ctrl">
+      <button id="play" class="primary">▶ 通して再生</button>
+      <span id="clock">0.0 / 15.0秒</span>
+    </div>
+    <div id="endStatus" class="status"></div>
+    <ul id="issues" class="issues"></ul>
+    <button id="export" class="export">MP4で書き出す</button>
+    <div id="progress" class="progress" hidden><div></div><span></span></div>
+    <div id="msg" class="msg" hidden></div>
+    <button id="download" class="download" hidden>保存する</button>
+    <figure id="result" class="result" hidden>
+      <video id="resultVideo" controls playsinline></video>
+      <figcaption id="saveHelp">書き出した動画です。保存ボタンが使えないときは、動画の上で右クリック →「名前を付けて動画を保存」で保存できます。</figcaption>
+    </figure>
+    <details class="help">
+      <summary>書き出す前のチェック</summary>
+      <ul>
+        <li>最後の「お願いします！」が最後まで聞こえる（音を出して聴く）</li>
+        <li>各場面の頭に、前のセリフの残りが入っていない</li>
+        <li>文字が顔にかぶっていない（「位置」で映像をずらせます）</li>
+        <li>金額・実績は、団体ページや大学の公式に書いてあるものだけ</li>
+        <li>同意のない人の顔・他社ロゴ・個人情報・背景の音楽が入っていない</li>
+      </ul>
+    </details>
+    <p class="privacy">動画はこのパソコンの中だけで処理します。どこにもアップロードされません。</p>
+  </aside>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
