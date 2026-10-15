@@ -65,17 +65,48 @@ export function placeholder(ctx, box, label) {
   ctx.restore();
   const cy = y + h * 0.56;
   ctx.font = font(900, 44);
-  const tw = ctx.measureText("ここに動画").width;
+  const PH_TEXT = "ここに動画が生成されるよ";
+  const tw = ctx.measureText(PH_TEXT).width;
   const pw = tw + 150;
   ctx.fillStyle = NAVY; rr(ctx, x + w / 2 - pw / 2, cy - 46, pw, 92, 46); ctx.fill();
   ctx.fillStyle = YELLOW; ctx.beginPath();
   ctx.moveTo(x + w / 2 - pw / 2 + 42, cy - 20); ctx.lineTo(x + w / 2 - pw / 2 + 42, cy + 20); ctx.lineTo(x + w / 2 - pw / 2 + 76, cy); ctx.fill();
   ctx.fillStyle = WHITE; ctx.textAlign = "left"; ctx.textBaseline = "middle";
-  ctx.fillText("ここに動画", x + w / 2 - pw / 2 + 100, cy + 2);
-  if (label) {
-    ctx.font = font(700, 34); ctx.fillStyle = "#6E728C"; ctx.textAlign = "center";
-    ctx.fillText(label, x + w / 2, cy + 90);
+  ctx.fillText(PH_TEXT, x + w / 2 - pw / 2 + 100, cy + 2);
+  // 説明文は点線の枠の内側に収まるように改行する（長すぎるときは少し小さくする）
+  if (label && w >= 500) {
+    const maxW = w - 160, bottom = y + h - 60;
+    let size = 34, lines;
+    for (;;) {
+      ctx.font = font(700, size);
+      lines = wrapLines(ctx, label, maxW);
+      if (size <= 24 || cy + 90 + (lines.length - 1) * size * 1.45 + size / 2 <= bottom) break;
+      size -= 2;
+    }
+    ctx.fillStyle = "#6E728C"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    lines.forEach((ln, i) => ctx.fillText(ln, x + w / 2, cy + 90 + i * size * 1.45));
   }
+}
+
+// 日本語の折り返し：幅を超えたら改行。句読点・閉じかっこは行頭に来ないよう前の行に残す。
+// 「、」「）」の後ろや「（」の前で切れるときはそこで切る
+const NO_HEAD = "、。，．）」』】〕！？・ー";
+export function wrapLines(ctx, text, maxW) {
+  const out = []; let line = "";
+  for (const ch of text) {
+    if (line && ctx.measureText(line + ch).width > maxW && !NO_HEAD.includes(ch)) {
+      // 行の後ろ半分に区切り（、）や「（」の前）があれば、そこで切る
+      let cut = -1;
+      for (let i = line.length - 1; i >= Math.floor(line.length * 0.5); i--) {
+        if ("、。）」".includes(line[i])) { cut = i + 1; break; }
+        if ("（「".includes(line[i])) { cut = i; break; }
+      }
+      if (cut > 0 && cut < line.length) { out.push(line.slice(0, cut)); line = line.slice(cut) + ch; }
+      else { out.push(line); line = ch; }
+    } else line += ch;
+  }
+  if (line) out.push(line);
+  return out;
 }
 
 // ---------- 共通の枠：左上ロゴ＋下の団体名帯 ----------

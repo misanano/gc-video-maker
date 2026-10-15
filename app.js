@@ -365,7 +365,7 @@ function renderBgm() {
   const box = $("#bgm");
   const b = P.bgm;
   box.innerHTML = "";
-  box.append(el("h2", {}, "BGM（任意）"));
+  box.append(el("h2", {}, "BGM（任意で設定できます）"));
   const sel = el("select", {});
   sel.append(el("option", { value: "none" }, "なし"));
   tracks.forEach((t, k) => sel.append(el("option", { value: `t${k}` }, `${t.title}（${t.mood}）`)));
@@ -377,10 +377,8 @@ function renderBgm() {
     else if (v === "file") { P.bgm.kind = "file"; P.bgm.audio = null; P.bgm.licensed = false; renderBgm(); update(); }
     else setBgm("track", tracks[+v.slice(1)]);
   });
-  box.append(el("p", { class: "guide" }, "GC Launchpad の広告で実際に使っている曲（すべて歌なし）から、雰囲気の違う4曲を選んであります。広告で使った区間から始まります。"));
+  box.append(el("p", { class: "guide" }, "Giving Campaign運営事務局が準備したBGM4曲を使用することができます。"));
   box.append(el("label", {}, "曲", sel));
-  const cur = b.kind === "track" && tracks.find((t) => t.title === b.title);
-  if (cur && cur.used) box.append(el("p", { class: "guide" }, `この曲を使っている広告：${cur.used}`));
   if (b.kind === "file") {
     if (!b.audio) box.append(dropZone("音源（mp3・m4a など）を<b>ここにドラッグ</b>", false, ([f]) => setBgm("file", f), "audio/*"));
     else box.append(el("div", { class: "name" }, el("span", {}, b.title), el("button", { onclick: () => { P.bgm.audio = null; renderBgm(); update(); } }, "入れ替える")));
